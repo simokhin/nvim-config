@@ -28,6 +28,8 @@ vim.pack.add({
   'https://github.com/stevearc/conform.nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/windwp/nvim-autopairs',
+  'https://github.com/nvim-lua/plenary.nvim',
+  'https://github.com/nvim-telescope/telescope.nvim',
 }, { confirm = false, load = true })
 
 local map = vim.keymap.set
@@ -35,6 +37,28 @@ map('n', '<leader>w', '<cmd>write<cr>', { desc = 'Save file' })
 map('n', '<leader>q', '<cmd>quit<cr>', { desc = 'Quit window' })
 map('n', '<leader>h', '<cmd>nohlsearch<cr>', { desc = 'Clear search highlight' })
 map('n', '<leader>e', '<cmd>Explore<cr>', { desc = 'Open file explorer' })
+
+pcall(function()
+  local telescope = require('telescope')
+  local builtin = require('telescope.builtin')
+
+  telescope.setup({
+    defaults = {
+      mappings = {
+        i = {
+          ['<esc>'] = require('telescope.actions').close,
+        },
+      },
+    },
+  })
+
+  map('n', '<leader>ff', builtin.find_files, { desc = 'Find files' })
+  map('n', '<leader>fg', builtin.live_grep, { desc = 'Grep files' })
+  map('n', '<leader>fb', builtin.buffers, { desc = 'Find buffers' })
+  map('n', '<leader>fh', builtin.help_tags, { desc = 'Find help' })
+  map('n', '<leader>fr', builtin.oldfiles, { desc = 'Recent files' })
+  map('n', '<leader>fs', builtin.lsp_document_symbols, { desc = 'Document symbols' })
+end)
 
 pcall(function()
   require('gitsigns').setup({

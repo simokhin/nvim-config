@@ -12,6 +12,7 @@
 - `conform.nvim` для форматирования при сохранении и ручного форматирования.
 - `gitsigns.nvim` для Git-индикаторов в колонке знаков.
 - `nvim-autopairs` для автозакрывания скобок и кавычек.
+- `telescope.nvim` для поиска файлов, текста, буферов, help-тегов и LSP-символов.
 - Встроенный файловый браузер `netrw` через `:Explore`.
 - Системный clipboard через `clipboard=unnamedplus`.
 
@@ -54,6 +55,15 @@ curl --version
 tar --version
 ```
 
+Рекомендуемые утилиты для Telescope:
+
+```sh
+rg --version
+fd --version
+```
+
+`ripgrep` нужен для поиска по тексту. `fd` ускоряет и улучшает поиск файлов, но Telescope может работать и без него.
+
 Clipboard provider:
 
 - Linux Wayland: `wl-copy` и `wl-paste` из пакета `wl-clipboard`;
@@ -73,6 +83,17 @@ Clipboard provider:
 | `<leader>e` | Открыть файловый браузер  |
 
 `<leader>` в этом конфиге это пробел.
+
+Telescope:
+
+| Клавиши      | Действие                  |
+| ------------ | ------------------------- |
+| `<leader>ff` | Найти файл                |
+| `<leader>fg` | Найти текст в проекте     |
+| `<leader>fb` | Найти открытый буфер      |
+| `<leader>fh` | Найти help-тег            |
+| `<leader>fr` | Недавние файлы            |
+| `<leader>fs` | Символы текущего документа |
 
 Clipboard включен через `unnamedplus`, поэтому обычные команды Neovim работают с системным буфером:
 
