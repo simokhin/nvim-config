@@ -27,6 +27,7 @@ vim.pack.add({
   'https://github.com/nvim-treesitter/nvim-treesitter',
   'https://github.com/stevearc/conform.nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
+  'https://github.com/windwp/nvim-autopairs',
 }, { confirm = false, load = true })
 
 local map = vim.keymap.set
@@ -38,6 +39,13 @@ map('n', '<leader>e', '<cmd>Explore<cr>', { desc = 'Open file explorer' })
 pcall(function()
   require('gitsigns').setup({
     current_line_blame = false,
+  })
+end)
+
+pcall(function()
+  require('nvim-autopairs').setup({
+    check_ts = true,
+    disable_filetype = { 'TelescopePrompt', 'vim' },
   })
 end)
 
