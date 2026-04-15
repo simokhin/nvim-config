@@ -5,6 +5,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.signcolumn = 'yes'
 vim.opt.cursorline = true
+vim.opt.scrolloff = 8
 vim.opt.termguicolors = true
 vim.opt.splitright = true
 vim.opt.splitbelow = true
@@ -20,7 +21,31 @@ vim.opt.softtabstop = 2
 vim.opt.completeopt = { 'menuone', 'noselect', 'popup' }
 vim.opt.clipboard = 'unnamedplus'
 
+local function set_transparent_background()
+  local groups = {
+    'Normal',
+    'NormalNC',
+    'NormalFloat',
+    'FloatBorder',
+    'SignColumn',
+    'LineNr',
+    'CursorLineNr',
+    'EndOfBuffer',
+    'TelescopeNormal',
+    'TelescopeBorder',
+  }
+
+  for _, group in ipairs(groups) do
+    vim.api.nvim_set_hl(0, group, { bg = 'NONE' })
+  end
+end
+
+vim.api.nvim_create_autocmd('ColorScheme', {
+  callback = set_transparent_background,
+})
+
 vim.cmd.colorscheme('habamax')
+set_transparent_background()
 
 vim.pack.add({
   'https://github.com/neovim/nvim-lspconfig',
@@ -28,6 +53,7 @@ vim.pack.add({
   'https://github.com/stevearc/conform.nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/windwp/nvim-autopairs',
+  'https://github.com/stevearc/oil.nvim',
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
 }, { confirm = false, load = true })
@@ -36,7 +62,17 @@ local map = vim.keymap.set
 map('n', '<leader>w', '<cmd>write<cr>', { desc = 'Save file' })
 map('n', '<leader>q', '<cmd>quit<cr>', { desc = 'Quit window' })
 map('n', '<leader>h', '<cmd>nohlsearch<cr>', { desc = 'Clear search highlight' })
-map('n', '<leader>e', '<cmd>Explore<cr>', { desc = 'Open file explorer' })
+map('n', '<leader>e', '<cmd>Oil<cr>', { desc = 'Open file explorer' })
+map('n', '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' })
+
+pcall(function()
+  require('oil').setup({
+    default_file_explorer = true,
+    view_options = {
+      show_hidden = true,
+    },
+  })
+end)
 
 pcall(function()
   local telescope = require('telescope')
