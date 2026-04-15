@@ -20,6 +20,7 @@ vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.completeopt = { 'menuone', 'noselect', 'popup' }
 vim.opt.clipboard = 'unnamedplus'
+vim.opt.laststatus = 3
 
 local function set_transparent_background()
   local groups = {
@@ -52,7 +53,9 @@ vim.pack.add({
   'https://github.com/nvim-treesitter/nvim-treesitter',
   'https://github.com/stevearc/conform.nvim',
   'https://github.com/lewis6991/gitsigns.nvim',
+  'https://github.com/nvim-lualine/lualine.nvim',
   'https://github.com/windwp/nvim-autopairs',
+  'https://github.com/windwp/nvim-ts-autotag',
   'https://github.com/stevearc/oil.nvim',
   'https://github.com/nvim-lua/plenary.nvim',
   'https://github.com/nvim-telescope/telescope.nvim',
@@ -103,9 +106,62 @@ pcall(function()
 end)
 
 pcall(function()
+  require('lualine').setup({
+    options = {
+      component_separators = '',
+      section_separators = '',
+      globalstatus = true,
+      theme = 'auto',
+    },
+    sections = {
+      lualine_a = { 'mode' },
+      lualine_b = { 'branch', 'diff' },
+      lualine_c = {
+        {
+          'filename',
+          path = 1,
+          symbols = {
+            modified = ' [+]',
+            readonly = ' [-]',
+            unnamed = '[No Name]',
+          },
+        },
+      },
+      lualine_x = {
+        {
+          'diagnostics',
+          sources = { 'nvim_diagnostic' },
+          symbols = { error = 'E:', warn = 'W:', info = 'I:', hint = 'H:' },
+        },
+      },
+      lualine_y = { 'filetype', 'progress' },
+      lualine_z = { 'location' },
+    },
+    inactive_sections = {
+      lualine_a = {},
+      lualine_b = {},
+      lualine_c = { { 'filename', path = 1 } },
+      lualine_x = { 'location' },
+      lualine_y = {},
+      lualine_z = {},
+    },
+  })
+end)
+
+pcall(function()
   require('nvim-autopairs').setup({
     check_ts = true,
     disable_filetype = { 'TelescopePrompt', 'vim' },
+  })
+end)
+
+pcall(function()
+  require('nvim-ts-autotag').setup({
+    opts = {
+      enable_close = true,
+      enable_rename = true,
+      enable_close_on_slash = false,
+    },
   })
 end)
 
